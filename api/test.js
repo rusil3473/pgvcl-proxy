@@ -1,20 +1,7 @@
-// api/test.js
-
-import https from "https";
-
 export default async function handler(req, res) {
-
   try {
-
-    const agent = new https.Agent({
-      family: 4
-    });
-
     const response = await fetch(
-      "https://mdm-apraava.pgvcl.com/login",
-      {
-        agent
-      }
+      "https://mdm-apraava.pgvcl.com/login"
     );
 
     const text = await response.text();
@@ -27,11 +14,13 @@ export default async function handler(req, res) {
 
   } catch (err) {
 
-    res.json({
+    res.status(500).json({
       success: false,
-      error: String(err)
+      name: err?.name,
+      message: err?.message,
+      stack: err?.stack,
+      cause: String(err?.cause)
     });
 
   }
-
 }
