@@ -1,14 +1,19 @@
+// api/test.js
+
+import https from "https";
+
 export default async function handler(req, res) {
 
   try {
 
+    const agent = new https.Agent({
+      family: 4
+    });
+
     const response = await fetch(
       "https://mdm-apraava.pgvcl.com/login",
       {
-        headers: {
-          "User-Agent":
-            "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"
-        }
+        agent
       }
     );
 
@@ -22,11 +27,9 @@ export default async function handler(req, res) {
 
   } catch (err) {
 
-    res.status(500).json({
+    res.json({
       success: false,
-      name: err.name,
-      message: err.message,
-      cause: String(err.cause)
+      error: String(err)
     });
 
   }
